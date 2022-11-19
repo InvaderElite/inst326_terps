@@ -46,6 +46,14 @@ class BaseCharacter:
         Side effects:
             Writes to stdout
         """
+    
+    def status(self):
+            """Returns the characters' name, health, power, and defense to
+        the user.
+
+        Side effects:
+          Writes to stdout
+     """
         
         
 class Tank(BaseCharacter):
@@ -155,7 +163,6 @@ class Warrior(BaseCharacter):
         Side effects:
             Writes action to stdout
         """
-        
 
 def socreboard_creation(): 
     """
