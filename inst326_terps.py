@@ -185,7 +185,7 @@ def main(p1_name, p2_name, p3_name):
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
-    shows users which player is playing, the action they chose, and the effect
+    shows users which player is playing, theaction they chose, and the effect
     it caused.
     
     Args:
