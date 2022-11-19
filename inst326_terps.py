@@ -10,7 +10,6 @@ class BaseCharacter:
         health (int): health of character
         power (int): power level of character
         defense (int): characters level of defense
-        
     """
     def __init__(self, name):
         """Creates the character to be played on the field.
@@ -174,7 +173,23 @@ def socreboard_population(socreboard_df):
     Returns: This will return the data frame 
          with the players and their ranks
     """
-            
+
+def main(p1_name, p2_name, p3_name):
+    """ Allows user to create their character and begin the game. User-input 
+    allows users to select their actions and conditional statements determines 
+    how those actions affect the other players. Returns print statements that
+    shows users which player is playing, the action they chose, and the effect
+    it caused.
+    
+    Args:
+        p1_name (BaseCharacter): Character object of player 1.
+        p2_name (BaseCharacter): Character object of player 2.
+        p3_name (BaseCharacter): Character object of player 3.
+        
+    Side effects:
+        Writes out to stdout the player that is playing, the action they chose,
+        and the effect of those actions. 
+    """
             
 def parse_args(args_list):
    """Parse command line arguments
@@ -193,7 +208,7 @@ def parse_args(args_list):
    parser = argparse.ArgumentParser()
    parser.add_argument('p1_name', type=str, help="Please enter Player 1 name")
    parser.add_argument('p2_name', type=str, help="Please enter Player 2 name")
-   parser.add_argument('p2_name', type=str, help="Please enter Player 3 name")
+   parser.add_argument('p3_name', type=str, help="Please enter Player 3 name")
    args = parser.parse_args(args_list)
    return args
  
