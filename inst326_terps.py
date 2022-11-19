@@ -157,7 +157,25 @@ class Warrior(BaseCharacter):
             Writes action to stdout
         """
         
-        
+
+def socreboard_creation(): 
+    """
+    This function will create dataframe that will act as a scorboard for the 
+    game. It will have room for x amount of players and ranks 1-x, but will not 
+    have any players within the dataframe yet, simply the format 
+    Return: will return the data frame """ 
+    
+def socreboard_population(socreboard_df): 
+    """
+    This function will take in the socreboard created in scoreboard_creation,
+    and after that, it will modify the dataframe and add x amount of
+    players, ranking them first to last place 
+
+    Returns: This will return the data frame 
+         with the players and their ranks
+    """
+            
+            
 def parse_args(args_list):
    """Parse command line arguments
   
@@ -180,7 +198,7 @@ def parse_args(args_list):
    return args
  
 if __name__ == '__main__':
-  
-   """play() function calling, the driver code to play the game"""
- 
-   play()
+    """
+    play() function calling, the driver code to play the game
+    """
+    play()
