@@ -77,6 +77,11 @@ class Tank(BaseCharacter):
             Sets the attributes of name, health, power, and defense.
         """
         
+        self.name = name 
+        self.health = 125
+        self.power = 10
+        self.defense = 0
+        
     def defend(self):
         """Action to defend against possible incoming damage, lasts one turn,
         would add temporary health to the character. Unique to the tank class.
@@ -85,6 +90,10 @@ class Tank(BaseCharacter):
             Writes to stdout that character has defended for the round, and adds
             health to character
         """
+        temp_health = 20
+        remaining_health = self.health + temp_health
+        return f"{self.name} used defend for the round!"
+        
     
     def attack(self, opponent):
         """Action to deal damage to an opponent. Deals damage according to what
@@ -97,6 +106,10 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
+        
+        super().attack(self.name)
+        return f"{self.opponent} took damage!"
+        
         
 class Mage(BaseCharacter):
     """Magic caster variation of base character, but has more power, and less
