@@ -20,6 +20,10 @@ class BaseCharacter:
         Side effects:
             Sets the attributes of name, health, power, and defense.
         """
+        self.name = name
+        self.health = 100
+        self.power = 20
+        self.defense = 0
         
     def attack(self, opponent):
         """Action to deal damage to an opponent. Deals damage according to what
@@ -32,6 +36,12 @@ class BaseCharacter:
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
+        if opponent.health != 0:
+            remaining_health = opponent.health - self.power           
+            return f"{self.name} attacked {opponent.name} and did {self.power} \
+                    damage. {opponent.name} has {remaining_health}HP left."
+        elif opponent.health ==0:
+            return f"{opponent.name} has fallen and can no longer fight."
         
     def taunt(self, num,  other = None):
         """Action to taunt other characters, displays taunt in text form, can
@@ -46,14 +56,22 @@ class BaseCharacter:
         Side effects:
             Writes to stdout
         """
+        taunts = [
+            "You are no match for me!",
+            "I'll end this here!",
+            "Come on!",
+            "This was too easy.",
+            "Go back to the tutorial, noob."
+        ]
+        return f"{self.name} taunts {other.name}: {taunts[num]}"
     
     def status(self):
-            """Returns the characters' name, health, power, and defense to
+        """Returns the characters' name, health, power, and defense to
         the user.
 
         Side effects:
           Writes to stdout
-     """
+        """
         
         
 class Tank(BaseCharacter):
@@ -231,9 +249,11 @@ def parse_args(args_list):
    parser.add_argument('p3_name', type=str, help="Please enter Player 3 name")
    args = parser.parse_args(args_list)
    return args
+   
  
 if __name__ == '__main__':
     """
     play() function calling, the driver code to play the game
     """
-    play()
+    play() 
+    
