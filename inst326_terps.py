@@ -236,6 +236,7 @@ def parse_args(args_list):
    parser.add_argument('p3_name', type=str, help="Please enter Player 3 name")
    args = parser.parse_args(args_list)
    return args
+   # testing code
  
 if __name__ == '__main__':
     """
