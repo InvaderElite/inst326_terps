@@ -241,4 +241,5 @@ if __name__ == '__main__':
     """
     play() function calling, the driver code to play the game
     """
-    play()
+    play() 
+    # Testing code
