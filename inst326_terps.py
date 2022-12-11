@@ -1,21 +1,22 @@
 import sys
 
 class Gameplay:
-    def __init__(self, playerlist):
-        self.players = playerlist
+    def __init__(self, player1, player2):
+        self.players = [player1, player2]
+        self.score = {player: 0 for player in self.players}
     
     def select_class(self):
         self.contestants = []
         for playername in self.players:
             class_type = input(f"{playername}, select a character class:"
                                " Tank, Warrior, Mage.")
-            if class_type == "Tank":
+            if class_type == "Tank" or "tank":
                 self.type = Tank(playername)
                 self.contestants.append((playername, str(self.type)))                
-            elif class_type == "Warrior":
+            elif class_type == "Warrior" or "warrior":
                 self.type = Warrior(playername)
                 self.contestants.append((playername, str(self.type)))
-            elif class_type == "Mage":
+            elif class_type == "Mage" or "mage":
                 self.type = Mage(playername)
                 self.contestants.append((playername, str(self.type)))
             else:
@@ -28,10 +29,12 @@ class Gameplay:
         
     def play_game(self):
         self.new_game()
+        for player in self.players:
+
         
 
 class Players:
-    def __init__(self, playerlist):
+    def __init__(self, player1, player2):
         
 
 class BaseCharacter:
@@ -70,10 +73,10 @@ class BaseCharacter:
             of the opponent
         """
         if opponent.health != 0:
-            remaining_health = opponent.health - self.power           
+            remaining_health = opponent.health - self.power
             return f"{self.name} attacked {opponent.name} and did {self.power} \
                     damage. {opponent.name} has {remaining_health}HP left."
-        elif opponent.health ==0:
+        elif opponent.health == 0:
             return f"{opponent.name} has fallen and can no longer fight."
         
     def taunt(self, num,  other = None):
@@ -122,22 +125,7 @@ class Tank(BaseCharacter):
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def __init__(self, name):
-        """Sets the status of the tank character, uses the base character stats
-        but with more health and less power.
-        
-        Args:
-            name (str): name of character
-            
-        Side effects:
-            Sets the attributes of name, health, power, and defense.
-        """
-        
-        self.name = name 
-        self.health = 125
-        self.power = 10
-        self.defense = 0
-        
+
     def defend(self):
         """Action to defend against possible incoming damage, lasts one turn,
         would add to the defense stat. Unique to the tank class.
@@ -146,11 +134,8 @@ class Tank(BaseCharacter):
             Writes to stdout that character has defended for the round, and adds
             health to character
         """
-        
-        #cap 150 for health
-        #temp_health
-        temp_health = 20
-        remaining_health = self.health + temp_health
+        self.defense = 20
+        self.health += self.defense
         return f"{self.name} used defend for the round!"
         
     
@@ -165,8 +150,9 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
-        attack_stance = super().attack(self.name)
-        return f"{attack_stance}"
+        self.power = 10
+        super().attack(self.name)
+        return f"{self.opponent} took damage!"
          
     def __str__(self):
         return "Class: Tank"
@@ -182,27 +168,13 @@ class Mage(BaseCharacter):
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def __init__(self, name):
-        """Sets the status of the mage character, uses the base character stats
-        but with more power and less health.
-        
-        Args:
-            name (str): name of character
-            
-        Side effects:
-            Sets the attributes of name, health, power, and defense.
-        """
-        
-        self.name = name 
-        self.health = 100
-        self.power = 10
-        self.defense = 0
-        
+    
     def attack(self):
         """Does nothing. Overrides the parent class method but makes it do
         nothing (pass). May right to stdout that mages cannot use the default
         attack?
         """
+        pass
         
     def fireball(self, opponent):
         """Action to attack another character, has more power than the default
@@ -231,30 +203,20 @@ class Mage(BaseCharacter):
 class Warrior(BaseCharacter):
     """Warrior class of the base character. Has standard status and
     uses the default attack but also has a guard action.
-
+    
     Attributes:
         name (str): name of character
         health (int): health of character
         power (int): power level of character
         defense (int): characters level of defense
     """
-
-    def guard(self, opponent):
+    def guard(self):
         """Action to defend an incoming attack. Will add to characters defense
-        stat and health to prevent possible damage from opponent. Unique to the warrior class.
-
+        stat. Unique to the warrior class.
+        
         Side effects:
             Writes action to stdout
         """
-        self.defense += 1
-
-        base_health = BaseCharacter("random").health
-        self.health = self.health + opponent.power
-        if self.health > base_health + opponent.power:
-            self.health = base_health + opponent.power
-
-        return f"{self.name} is going to defend!"
-
     def __str__(self):
         return "Class: Warrior"
         
@@ -276,7 +238,8 @@ def socreboard_population(socreboard_df):
     """
 
 
-def play():
+
+def main(p1_name, p2_name, p3_name):
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
@@ -320,4 +283,13 @@ if __name__ == '__main__':
     play() function calling, the driver code to play the game
     """
     play() 
+    
+    #have function that takes in both player1 and player2
+    #input() function, storing a variable as the user input
+    #input() function to prompt turn-based input
+    #dataframe, don't worry too much about this
+    #finish character classes first, don't focus so so much on the dataframes 
+    #dataframe population should be a simple plug and chug of values and attributes
+    #keep things simple, don't confuse ourselves too much
+    #set operations ideas = getting rid of duplicate values
     
