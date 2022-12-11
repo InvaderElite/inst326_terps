@@ -252,8 +252,7 @@ def socreboard_population(socreboard_df):
     """
 
 
-
-def main(p1_name, p2_name, p3_name):
+def play():
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
