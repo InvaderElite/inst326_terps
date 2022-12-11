@@ -2,25 +2,32 @@ import sys
 
 class Gameplay:
     def __init__(self, playerlist):
-        self.players = [playerlist]
+        self.players = playerlist
     
     def select_class(self):
-        contestants = []
+        self.contestants = []
         for playername in self.players:
             class_type = input(f"{playername}, select a character class:"
                                " Tank, Warrior, Mage.")
             if class_type == "Tank":
-                type = Tank(playername)
-                contestants.append((playername, str(type)))
+                self.type = Tank(playername)
+                self.contestants.append((playername, str(self.type)))                
             elif class_type == "Warrior":
-                type = Warrior(playername)
-                contestants.append((playername, str(type)))
+                self.type = Warrior(playername)
+                self.contestants.append((playername, str(self.type)))
             elif class_type == "Mage":
-                type = Mage(playername)
-                contestants.append((playername, str(type)))
+                self.type = Mage(playername)
+                self.contestants.append((playername, str(self.type)))
+            else:
+                raise ValueError
+            return self.contestants
             
     def new_game(self):
+        self.players.clear()
+        self.contestants.clear()
         
+    def play_game(self):
+        self.new_game()
         
 
 class Players:
@@ -163,8 +170,7 @@ class Tank(BaseCharacter):
          
     def __str__(self):
         return "Class: Tank"
-        
-
+    
         
 class Mage(BaseCharacter):
     """Magic caster variation of base character, but has more power, and less
