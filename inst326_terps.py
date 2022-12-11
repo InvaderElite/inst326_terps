@@ -139,6 +139,9 @@ class Tank(BaseCharacter):
             Writes to stdout that character has defended for the round, and adds
             health to character
         """
+        
+        #cap 150 for health
+        #temp_health
         temp_health = 20
         remaining_health = self.health + temp_health
         return f"{self.name} used defend for the round!"
@@ -173,7 +176,7 @@ class Mage(BaseCharacter):
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def __init__(self):
+    def __init__(self, name):
         """Sets the status of the mage character, uses the base character stats
         but with more power and less health.
         
@@ -183,6 +186,11 @@ class Mage(BaseCharacter):
         Side effects:
             Sets the attributes of name, health, power, and defense.
         """
+        
+        self.name = name 
+        self.health = 100
+        self.power = 10
+        self.defense = 0
         
     def attack(self):
         """Does nothing. Overrides the parent class method but makes it do
