@@ -1,5 +1,31 @@
 import sys
 
+class Gameplay:
+    def __init__(self, playerlist):
+        self.players = [playerlist]
+    
+    def select_class(self):
+        contestants = []
+        for playername in self.players:
+            class_type = input(f"{playername}, select a character class:"
+                               " Tank, Warrior, Mage.")
+            if class_type == "Tank":
+                type = Tank(playername)
+                contestants.append((playername, str(type)))
+            elif class_type == "Warrior":
+                type = Warrior(playername)
+                contestants.append((playername, str(type)))
+            elif class_type == "Mage":
+                type = Mage(playername)
+                contestants.append((playername, str(type)))
+            
+    def new_game(self):
+        
+        
+
+class Players:
+    def __init__(self, playerlist):
+        
 
 class BaseCharacter:
     """Standard character with default status and actions, is not used as a
@@ -72,7 +98,12 @@ class BaseCharacter:
         Side effects:
           Writes to stdout
         """
-        
+        return str(
+            f"{self.name}'s status:"
+            f"Health: {self.health}"
+            f"Power: {self.power}"
+            f"Defense: {self.defense}"            
+            )
         
 class Tank(BaseCharacter):
     """Tank class variation of base character, has more health, less
@@ -97,7 +128,7 @@ class Tank(BaseCharacter):
         
     def defend(self):
         """Action to defend against possible incoming damage, lasts one turn,
-        would add temporary health to the character. Unique to the tank class.
+        would add to the defense stat. Unique to the tank class.
            
         Side effects:
             Writes to stdout that character has defended for the round, and adds
@@ -115,6 +146,9 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
+        
+    def __str__(self):
+        return "Class: Tank"
         
 class Mage(BaseCharacter):
     """Magic caster variation of base character, but has more power, and less
@@ -164,9 +198,12 @@ class Mage(BaseCharacter):
             changes the characters health
         """
         
+    def __str__(self):
+        return "Class: Mage"
+    
 class Warrior(BaseCharacter):
     """Warrior class of the base character. Has standard status and
-    uses the default attack but also a roll action.
+    uses the default attack but also has a guard action.
     
     Attributes:
         name (str): name of character
@@ -174,14 +211,16 @@ class Warrior(BaseCharacter):
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def roll(self):
-        """Action to roll and have a chance to dodge any incoming attack. If
-        there is no attack, 100% dodge rate. Unique to warrior class.
+    def guard(self):
+        """Action to defend an incoming attack. Will add to characters defense
+        stat. Unique to the warrior class.
         
         Side effects:
             Writes action to stdout
         """
-
+    def __str__(self):
+        return "Class: Warrior"
+        
 def socreboard_creation(): 
     """
     This function will create dataframe that will act as a scorboard for the 
@@ -198,6 +237,8 @@ def socreboard_population(socreboard_df):
     Returns: This will return the data frame 
          with the players and their ranks
     """
+
+
 
 def main(p1_name, p2_name, p3_name):
     """ Allows user to create their character and begin the game. User-input 
