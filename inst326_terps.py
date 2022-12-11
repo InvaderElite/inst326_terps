@@ -162,8 +162,8 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
-        super().attack(self.name)
-        return f"{self.opponent} took damage!"
+        attack_stance = super().attack(self.name)
+        return f"{attack_stance}"
          
     def __str__(self):
         return "Class: Tank"
@@ -223,20 +223,30 @@ class Mage(BaseCharacter):
 class Warrior(BaseCharacter):
     """Warrior class of the base character. Has standard status and
     uses the default attack but also has a guard action.
-    
+
     Attributes:
         name (str): name of character
         health (int): health of character
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def guard(self):
+
+    def guard(self, opponent):
         """Action to defend an incoming attack. Will add to characters defense
-        stat. Unique to the warrior class.
-        
+        stat and health to prevent possible damage from opponent. Unique to the warrior class.
+
         Side effects:
             Writes action to stdout
         """
+        self.defense += 1
+
+        base_health = BaseCharacter("random").health
+        self.health = self.health + opponent.power
+        if self.health > base_health + opponent.power:
+            self.health = base_health + opponent.power
+
+        return f"{self.name} is going to defend!"
+
     def __str__(self):
         return "Class: Warrior"
         
@@ -258,8 +268,7 @@ def socreboard_population(socreboard_df):
     """
 
 
-
-def main(p1_name, p2_name, p3_name):
+def play():
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
@@ -303,13 +312,4 @@ if __name__ == '__main__':
     play() function calling, the driver code to play the game
     """
     play() 
-    
-    #have function that takes in both player1 and player2
-    #input() function, storing a variable as the user input
-    #input() function to prompt turn-based input
-    #dataframe, don't worry too much about this
-    #finish character classes first, don't focus so so much on the dataframes 
-    #dataframe population should be a simple plug and chug of values and attributes
-    #keep things simple, don't confuse ourselves too much
-    #set operations ideas = getting rid of duplicate values
     
