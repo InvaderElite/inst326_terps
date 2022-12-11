@@ -298,12 +298,3 @@ if __name__ == '__main__':
     """
     play() 
     
-    #have function that takes in both player1 and player2
-    #input() function, storing a variable as the user input
-    #input() function to prompt turn-based input
-    #dataframe, don't worry too much about this
-    #finish character classes first, don't focus so so much on the dataframes 
-    #dataframe population should be a simple plug and chug of values and attributes
-    #keep things simple, don't confuse ourselves too much
-    #set operations ideas = getting rid of duplicate values
-    
