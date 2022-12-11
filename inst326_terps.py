@@ -155,8 +155,8 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
-        super().attack(self.name)
-        return f"{self.opponent} took damage!"
+        attack_stance = super().attack(self.name)
+        return f"{attack_stance}"
          
     def __str__(self):
         return "Class: Tank"
