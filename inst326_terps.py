@@ -126,6 +126,11 @@ class Tank(BaseCharacter):
             Sets the attributes of name, health, power, and defense.
         """
         
+        self.name = name 
+        self.health = 125
+        self.power = 10
+        self.defense = 0
+        
     def defend(self):
         """Action to defend against possible incoming damage, lasts one turn,
         would add to the defense stat. Unique to the tank class.
@@ -134,6 +139,10 @@ class Tank(BaseCharacter):
             Writes to stdout that character has defended for the round, and adds
             health to character
         """
+        temp_health = 20
+        remaining_health = self.health + temp_health
+        return f"{self.name} used defend for the round!"
+        
     
     def attack(self, opponent):
         """Action to deal damage to an opponent. Deals damage according to what
@@ -146,9 +155,13 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
-        
+        super().attack(self.name)
+        return f"{self.opponent} took damage!"
+         
     def __str__(self):
         return "Class: Tank"
+        
+
         
 class Mage(BaseCharacter):
     """Magic caster variation of base character, but has more power, and less
@@ -277,10 +290,20 @@ def parse_args(args_list):
    parser.add_argument('p3_name', type=str, help="Please enter Player 3 name")
    args = parser.parse_args(args_list)
    return args
+   
  
 if __name__ == '__main__':
     """
     play() function calling, the driver code to play the game
     """
     play() 
-    # Testing code
+    
+    #have function that takes in both player1 and player2
+    #input() function, storing a variable as the user input
+    #input() function to prompt turn-based input
+    #dataframe, don't worry too much about this
+    #finish character classes first, don't focus so so much on the dataframes 
+    #dataframe population should be a simple plug and chug of values and attributes
+    #keep things simple, don't confuse ourselves too much
+    #set operations ideas = getting rid of duplicate values
+    
