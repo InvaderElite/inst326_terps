@@ -164,7 +164,8 @@ class Tank(BaseCharacter):
         self.defense = 20
         if self.health < 150:
             new_health = self.health + self.defense
-        elif self.health == 150:
+        elif self.health >= 150:
+            self.health = 150
             return f"{self.name} is at max health."
      
         return f"{self.name} used defend for the round and now has {new_health} for health."
@@ -233,8 +234,9 @@ class Mage(BaseCharacter):
         """
         heal_value = 20
         if self.health < 150:
-            self.health += heal_value
-        elif self.health == 150: 
+            new_health = self.health + heal_value
+        elif self.health >= 150: 
+            self.health = 150
             return f"{self.name} is at max health."
         
     def __str__(self):
@@ -279,8 +281,8 @@ def scoreboard_population(socreboard_df):
 
 
 
-def main(p1_name, p2_name):
-    """Allows user to create their character and begin the game. User-input 
+def main(player1, player2):
+    """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
     shows users which player is playing, theaction they chose, and the effect
@@ -289,12 +291,13 @@ def main(p1_name, p2_name):
     Args:
         p1_name (BaseCharacter): Character object of player 1.
         p2_name (BaseCharacter): Character object of player 2.
-        p3_name (BaseCharacter): Character object of player 3.
         
     Side effects:
         Writes out to stdout the player that is playing, the action they chose,
         and the effect of those actions. 
     """
+    
+    Gameplay.select()
             
 def parse_args(args_list):
    """Parse command line arguments
@@ -322,7 +325,7 @@ if __name__ == '__main__':
     """
     play() function calling, the driver code to play the game
     """
-    play() 
+    main()
     
     #have function that takes in both player1 and player2
     #input() function, storing a variable as the user input
