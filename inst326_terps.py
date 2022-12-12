@@ -10,8 +10,8 @@ class Gameplay:
     def select_class(self):
         self.contestants = []
         for playername in self.players:
-            class_type = input(f"{playername}, select a character class:"
-                               " Tank, Warrior, Mage.")
+            class_type = str(input(f"{playername}, select a character class:"
+                               " Tank, Warrior, Mage."))
             if class_type == "Tank" or "tank":
                 self.type = Tank(playername)
                 self.contestants.append((playername, str(self.type)))                
@@ -57,7 +57,8 @@ class Gameplay:
                 print(f"{self.players[1]}'s turn, please take choose an action.")
                 
     def results(self):
-        print(self.score)
+        scoreboard_creation()
+        scoreboard_population()
             
 class Player:
     def __init__(self, player1, player2):
@@ -105,7 +106,7 @@ class BaseCharacter:
         elif opponent.health == 0:
             print(f"{opponent.name} has fallen and can no longer fight.")
         
-    def taunt(self, num,  other = None):
+    def taunt(self, num,  other = False):
         """Action to taunt other characters, displays taunt in text form, can
         take another character to specify the taunt. Has multiple taunts that
         can be chosen or randomized.
@@ -166,8 +167,7 @@ class Tank(BaseCharacter):
         elif self.health == 150:
             return f"{self.name} is at max health."
      
-        return f"{self.name} used defend for the round and now has {new_health}\
-                    for health."
+        return f"{self.name} used defend for the round and now has {new_health} for health."
         
     
     def attack(self, opponent):
@@ -183,7 +183,7 @@ class Tank(BaseCharacter):
         """
         self.power = 10
         super().attack(self.name)
-        print(f"{self.opponent} took damage!")
+        print(f"{opponent.name} took damage!")
          
     def __str__(self):
         return "Class: Tank"
@@ -233,7 +233,7 @@ class Mage(BaseCharacter):
         """
         heal_value = 20
         if self.health < 150:
-            new_health = self.health + heal_value
+            self.health += heal_value
         elif self.health == 150: 
             return f"{self.name} is at max health."
         
@@ -260,14 +260,14 @@ class Warrior(BaseCharacter):
     def __str__(self):
         return "Class: Warrior"
         
-def socreboard_creation(): 
+def scoreboard_creation(): 
     """
     This function will create dataframe that will act as a scorboard for the 
     game. It will have room for x amount of players and ranks 1-x, but will not 
     have any players within the dataframe yet, simply the format 
     Return: will return the data frame """ 
     
-def socreboard_population(socreboard_df): 
+def scoreboard_population(socreboard_df): 
     """
     This function will take in the socreboard created in scoreboard_creation,
     and after that, it will modify the dataframe and add x amount of
@@ -279,8 +279,8 @@ def socreboard_population(socreboard_df):
 
 
 
-def main(p1_name, p2_name, p3_name):
-    """ Allows user to create their character and begin the game. User-input 
+def main(p1_name, p2_name):
+    """Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
     shows users which player is playing, theaction they chose, and the effect
