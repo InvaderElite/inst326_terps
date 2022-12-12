@@ -1,68 +1,51 @@
 import sys
+import random
 
 class Gameplay:
-    def __init__(self, player1, player2):
-        self.players = [player1, player2]
-        self.score = {player: 0 for player in self.players}
-        self.round = 0
-        self.game_done = False
+    def __init__(self, player):
+        self.player = player
+        self.score = {player: 0}
+        self.type = None
+
     
     def select_class(self):
-        self.contestants = []
-        for playername in self.players:
+        for playername in self.player:
             class_type = str(input(f"{playername}, select a character class:"
                                " Tank, Warrior, Mage."))
             if class_type == "Tank" or "tank":
                 self.type = Tank(playername)
-                self.contestants.append((playername, str(self.type)))                
             elif class_type == "Warrior" or "warrior":
                 self.type = Warrior(playername)
-                self.contestants.append((playername, str(self.type)))
             elif class_type == "Mage" or "mage":
                 self.type = Mage(playername)
-                self.contestants.append((playername, str(self.type)))
             else:
                 raise ValueError
-            return self.contestants
-            
-    def new_game(self):
-        self.players.clear()
-        self.contestants.clear()
         
-    def game_over(self, player1, player2):
-        if player1.health < 1 and player2.health > 0:
-            self.game_done = True
-            print(f"{player2.name} wins! Game Over.")
-            self.score[player2] += 1
-        elif player1.health < 1 and player2.health > 0:
-            self.game_done = True
-            print(f"{player1.name} wins! Game Over.")
-            self.score[player1] += 1
-        elif player1.health < 1 and player2.health < 1:
-            self.game_over = False
-            print(f"No one has won yet, keep fighting!")
-        
-    def play_game(self):
-        self.new_game()
-        for player in self.players:
-            print(f"{player.name} is playing as {player.type}")
-        while not self.game_over():
-            if self.round % 2 == 0:
-                self.players[0].turn
-                self.round += 1
-                print(f"{self.players[0]}'s turn, please take choose an action.")
-            else:
-                self.players[1].turn
-                self.round += 1
-                print(f"{self.players[1]}'s turn, please take choose an action.")
+    def action(self):
+        if self.type == Tank:
+            choice = input("Choose an action: Attack or Defend. Stop to stop.")
+            if choice == "Attack":
+                self.attack()
+            elif choice == "Defend":
+                self.defend()
+        if self.type == Mage:
+            choice = input("Choose an action: Heal or Fireball. Stop to stop.")
+            if choice == "Heal":
+                self.heal()
+            elif choice == "Fireball":
+                self.fireball()
+        if self.type == Warrior:
+            choice = input("Choose an action: Attack or Guard. Stop to stop.")
+            if choice == "Attack":
+                self.attack()
+            elif choice == "Fireball":
+                self.guard()
+            elif choice == "Stop":
+                print(f"The tutorial is over, go kick some butt!")
                 
-    def results(self):
+    def score(self):
         scoreboard_creation()
         scoreboard_population()
-            
-class Player:
-    def __init__(self, player1, player2):
-        s
 
 class BaseCharacter:
     """Standard character with default status and actions, is not used as a
@@ -74,7 +57,7 @@ class BaseCharacter:
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def __init__(self, name):
+    def __init__(self, name = "Character"):
         """Creates the character to be played on the field.
         
         Args:
@@ -85,28 +68,25 @@ class BaseCharacter:
         """
         self.name = name
         self.health = 100
-        self.power = 20
+        self.power = 0
         self.defense = 0
+        self.total_dmg = 0
+        self.total_def = 0
+        self.total_heal = 0
         
-    def attack(self, opponent):
+    def attack(self):
         """Action to deal damage to an opponent. Deals damage according to what
         the character's power is currently at.
-        
-        Args:
-            opponent (BaseCharacter): other character
             
         Side effects:
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
-        if opponent.health != 0:
-            remaining_health = opponent.health - self.power
-            print(f"{self.name} attacked {opponent.name} and did {self.power} \
-                    damage. {opponent.name} has {remaining_health}HP left.")
-        elif opponent.health == 0:
-            print(f"{opponent.name} has fallen and can no longer fight.")
+        self.power = random.randint(20, 40)
+        print(f"{self.name} did {self.power} damage to the dummy!")
+        self.total_dmg += self.power
         
-    def taunt(self, num,  other = False):
+    def taunt(self, num):
         """Action to taunt other characters, displays taunt in text form, can
         take another character to specify the taunt. Has multiple taunts that
         can be chosen or randomized.
@@ -126,7 +106,7 @@ class BaseCharacter:
             "This was too easy.",
             "Go back to the tutorial, noob."
         ]
-        print(f"{self.name} taunts {other.name}: {taunts[num]}")
+        print(f"{self.name} taunts: {taunts[num]}")
     
     def status(self):
         """Returns the characters' name, health, power, and defense to
@@ -167,8 +147,9 @@ class Tank(BaseCharacter):
         elif self.health >= 150:
             self.health = 150
             return f"{self.name} is at max health."
+        self.total_def += self.defense
      
-        return f"{self.name} used defend for the round and now has {new_health} for health."
+        print(f"{self.name} used defend for the round and now has {new_health} health.")
         
     
     def attack(self, opponent):
@@ -182,14 +163,12 @@ class Tank(BaseCharacter):
             Writes to stdout that opponent has taken damage, changes the health
             of the opponent
         """
-        self.power = 10
-        super().attack(self.name)
-        print(f"{opponent.name} took damage!")
+        self.power = random.randint(10, 20)
+        return super().attack()
          
     def __str__(self):
         return "Class: Tank"
     
-        
 class Mage(BaseCharacter):
     """Magic caster variation of base character, but has more power, and less
     health. Has no standard attack action, but two casting actions.
@@ -206,24 +185,20 @@ class Mage(BaseCharacter):
         nothing (pass). May right to stdout that mages cannot use the default
         attack?
         """
-        pass
-        return f"{self.name} cannot use the default attack."
+        print(f"{self.name} cannot use the default attack.")
         
-    def fireball(self, opponent):
+    def fireball(self):
         """Action to attack another character, has more power than the default
         attack action. Unique to the mage class.
-        
-        Args:
-            opponent (BaseCharacter or Tank or Mage or Warrior): name of another
-            character/player
+
             
         Side effects:
             Writes out to stdout that the opponent was attacked, changes the
             health of the opponent attacked
         """
-        self.power = 30
-        fire_attack = super().attack(self.name)
-        return fire_attack
+        self.power = random.randint(30, 60)
+        return super().attack()
+         
         
     def heal(self):
         """Heals a small amount of the user's permanent health. Unique to the
@@ -234,10 +209,11 @@ class Mage(BaseCharacter):
         """
         heal_value = 20
         if self.health < 150:
-            new_health = self.health + heal_value
+            self.health += heal_value
         elif self.health >= 150: 
             self.health = 150
             return f"{self.name} is at max health."
+        self.total_heal += heal_value
         
     def __str__(self):
         return "Class: Mage"
@@ -278,8 +254,6 @@ def scoreboard_population(socreboard_df):
     Returns: This will return the data frame 
          with the players and their ranks
     """
-
-
 
 def main(player1, player2):
     """ Allows user to create their character and begin the game. User-input 
