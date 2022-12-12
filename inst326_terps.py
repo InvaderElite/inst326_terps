@@ -161,8 +161,13 @@ class Tank(BaseCharacter):
             health to character
         """
         self.defense = 20
-        self.health += self.defense
-        print(f"{self.name} used defend for the round!")
+        if self.health < 150:
+            new_health = self.health + self.defense
+        elif self.health == 150:
+            return f"{self.name} is at max health."
+     
+        return f"{self.name} used defend for the round and now has {new_health}\
+                    for health."
         
     
     def attack(self, opponent):
@@ -201,6 +206,7 @@ class Mage(BaseCharacter):
         attack?
         """
         pass
+        return f"{self.name} cannot use the default attack."
         
     def fireball(self, opponent):
         """Action to attack another character, has more power than the default
@@ -214,6 +220,9 @@ class Mage(BaseCharacter):
             Writes out to stdout that the opponent was attacked, changes the
             health of the opponent attacked
         """
+        self.power = 30
+        fire_attack = super().attack(self.name)
+        return fire_attack
         
     def heal(self):
         """Heals a small amount of the user's permanent health. Unique to the
@@ -222,6 +231,11 @@ class Mage(BaseCharacter):
         Side effects:
             changes the characters health
         """
+        heal_value = 20
+        if self.health < 150:
+            new_health = self.health + heal_value
+        elif self.health == 150: 
+            return f"{self.name} is at max health."
         
     def __str__(self):
         return "Class: Mage"
