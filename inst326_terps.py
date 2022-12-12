@@ -4,6 +4,8 @@ class Gameplay:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
         self.score = {player: 0 for player in self.players}
+        self.round = 0
+        self.game_done = False
     
     def select_class(self):
         self.contestants = []
@@ -27,15 +29,39 @@ class Gameplay:
         self.players.clear()
         self.contestants.clear()
         
+    def game_over(self, player1, player2):
+        if player1.health < 1 and player2.health > 0:
+            self.game_done = True
+            print(f"{player2.name} wins! Game Over.")
+            self.score[player2] += 1
+        elif player1.health < 1 and player2.health > 0:
+            self.game_done = True
+            print(f"{player1.name} wins! Game Over.")
+            self.score[player1] += 1
+        elif player1.health < 1 and player2.health < 1:
+            self.game_over = False
+            print(f"No one has won yet, keep fighting!")
+        
     def play_game(self):
         self.new_game()
         for player in self.players:
-
-        
-
-class Players:
+            print(f"{player.name} is playing as {player.type}")
+        while not self.game_over():
+            if self.round % 2 == 0:
+                self.players[0].turn
+                self.round += 1
+                print(f"{self.players[0]}'s turn, please take choose an action.")
+            else:
+                self.players[1].turn
+                self.round += 1
+                print(f"{self.players[1]}'s turn, please take choose an action.")
+                
+    def results(self):
+        print(self.score)
+            
+class Player:
     def __init__(self, player1, player2):
-        
+        s
 
 class BaseCharacter:
     """Standard character with default status and actions, is not used as a
@@ -74,10 +100,10 @@ class BaseCharacter:
         """
         if opponent.health != 0:
             remaining_health = opponent.health - self.power
-            return f"{self.name} attacked {opponent.name} and did {self.power} \
-                    damage. {opponent.name} has {remaining_health}HP left."
+            print(f"{self.name} attacked {opponent.name} and did {self.power} \
+                    damage. {opponent.name} has {remaining_health}HP left.")
         elif opponent.health == 0:
-            return f"{opponent.name} has fallen and can no longer fight."
+            print(f"{opponent.name} has fallen and can no longer fight.")
         
     def taunt(self, num,  other = None):
         """Action to taunt other characters, displays taunt in text form, can
@@ -99,7 +125,7 @@ class BaseCharacter:
             "This was too easy.",
             "Go back to the tutorial, noob."
         ]
-        return f"{self.name} taunts {other.name}: {taunts[num]}"
+        print(f"{self.name} taunts {other.name}: {taunts[num]}")
     
     def status(self):
         """Returns the characters' name, health, power, and defense to
@@ -136,7 +162,7 @@ class Tank(BaseCharacter):
         """
         self.defense = 20
         self.health += self.defense
-        return f"{self.name} used defend for the round!"
+        print(f"{self.name} used defend for the round!")
         
     
     def attack(self, opponent):
@@ -152,7 +178,7 @@ class Tank(BaseCharacter):
         """
         self.power = 10
         super().attack(self.name)
-        return f"{self.opponent} took damage!"
+        print(f"{self.opponent} took damage!")
          
     def __str__(self):
         return "Class: Tank"
