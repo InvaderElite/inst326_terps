@@ -6,6 +6,7 @@ class Gameplay:
         self.player = player
         self.score = {player: 0}
         self.type = None
+        self.counter = 0
 
     
     def select_class(self):
@@ -26,22 +27,38 @@ class Gameplay:
             choice = input("Choose an action: Attack or Defend. Stop to stop.")
             if choice == "Attack":
                 self.attack()
+                self.counter += 1
             elif choice == "Defend":
                 self.defend()
+                self.counter += 1
+            elif choice == "Stop":
+                print(f"The tutorial is over, go kick some butt!")
+            else:
+                raise ValueError
         if self.type == Mage:
             choice = input("Choose an action: Heal or Fireball. Stop to stop.")
             if choice == "Heal":
                 self.heal()
+                self.counter += 1
             elif choice == "Fireball":
                 self.fireball()
+                self.counter += 1
+            elif choice == "Stop":
+                print(f"The tutorial is over, go kick some butt!")
+            else:
+                raise ValueError
         if self.type == Warrior:
             choice = input("Choose an action: Attack or Guard. Stop to stop.")
             if choice == "Attack":
                 self.attack()
+                self.counter += 1
             elif choice == "Fireball":
                 self.guard()
+                self.counter += 1
             elif choice == "Stop":
                 print(f"The tutorial is over, go kick some butt!")
+            else:
+                raise ValueError
                 
     def score(self):
         scoreboard_creation()
@@ -255,7 +272,7 @@ def scoreboard_population(socreboard_df):
          with the players and their ranks
     """
 
-def main(player1, player2):
+def main(player1):
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
