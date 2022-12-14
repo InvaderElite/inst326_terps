@@ -6,6 +6,7 @@ class Gameplay:
         self.player = player
         self.score = {player: 0}
         self.type = None
+        self.counter = 0
 
     
     def select_class(self):
@@ -26,26 +27,57 @@ class Gameplay:
             choice = input("Choose an action: Attack or Defend. Stop to stop.")
             if choice == "Attack":
                 self.attack()
+                self.counter += 1
             elif choice == "Defend":
                 self.defend()
+                self.counter += 1
+            elif choice == "Stop":
+                print(f"The tutorial is over, go kick some butt!")
+            else:
+                raise ValueError
         if self.type == Mage:
             choice = input("Choose an action: Heal or Fireball. Stop to stop.")
             if choice == "Heal":
                 self.heal()
+                self.counter += 1
             elif choice == "Fireball":
                 self.fireball()
+                self.counter += 1
+            elif choice == "Stop":
+                print(f"The tutorial is over, go kick some butt!")
+            else:
+                raise ValueError
         if self.type == Warrior:
             choice = input("Choose an action: Attack or Guard. Stop to stop.")
             if choice == "Attack":
                 self.attack()
+                self.counter += 1
             elif choice == "Fireball":
                 self.guard()
+                self.counter += 1
             elif choice == "Stop":
                 print(f"The tutorial is over, go kick some butt!")
+            else:
+                raise ValueError
                 
-    def score(self):
-        scoreboard_creation()
-        scoreboard_population()
+    def scoreboard_creation(self):
+        self.action()
+        self.attack()
+        self.defend()
+        self.heal()
+    
+        self.score_board = pd.DataFrame({"Total Damage": [self.total_dmg],
+                             "Total Defence": [self.total_def],
+                             "Total Heal":[self.total_heal],})
+        self.turns = pd.DataFrame({"": "","Turns":self.counter})
+  
+def scoreboard_visual(self):
+    self.scoreboard_creation()
+    turn_count = self.turns.groupby("")["Turns"].count()
+    print("Total Player turns: ", turn_count)
+    self.score_board.plot.bar(y = ["Total Damage",
+                           "Total Defence", 
+                           "Total Heal"], xlabel = "Player 1")
 
 class BaseCharacter:
     """Standard character with default status and actions, is not used as a
@@ -265,7 +297,7 @@ def scoreboard_population(socreboard_df):
          with the players and their ranks
     """
 
-def main():
+def main(player1, player2):
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
