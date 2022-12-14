@@ -265,7 +265,7 @@ def scoreboard_population(socreboard_df):
          with the players and their ranks
     """
 
-def main(player1, player2):
+def main():
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
@@ -280,8 +280,8 @@ def main(player1, player2):
         Writes out to stdout the player that is playing, the action they chose,
         and the effect of those actions. 
     """
-    
-    Gameplay.select()
+    player1 = Gameplay()
+    player1.select_class("Bob")
             
 def parse_args(args_list):
    """Parse command line arguments
