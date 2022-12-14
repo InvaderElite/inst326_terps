@@ -60,9 +60,24 @@ class Gameplay:
             else:
                 raise ValueError
                 
-    def score(self):
-        scoreboard_creation()
-        scoreboard_population()
+    def scoreboard_creation(self):
+        self.action()
+        self.attack()
+        self.defend()
+        self.heal()
+    
+        self.score_board = pd.DataFrame({"Total Damage": [self.total_dmg],
+                             "Total Defence": [self.total_def],
+                             "Total Heal":[self.total_heal],})
+        self.turns = pd.DataFrame({"": "","Turns":self.counter})
+  
+def scoreboard_visual(self):
+    self.scoreboard_creation()
+    turn_count = self.turns.groupby("")["Turns"].count()
+    print("Total Player turns: ", turn_count)
+    self.score_board.plot.bar(y = ["Total Damage",
+                           "Total Defence", 
+                           "Total Heal"], xlabel = "Player 1")
 
 class BaseCharacter:
     """Standard character with default status and actions, is not used as a
