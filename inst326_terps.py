@@ -105,19 +105,23 @@ class BaseCharacter:
     playable character but a template for character classes.
     
     Attributes:
-        name (str): name of character
-        health (int): health of character
-        power (int): power level of character
-        defense (int): characters level of defense
+        name (str): name of character.
+        health (int): health of character.
+        power (int): power level of character.
+        defense (int): characters level of defense.
+        total_dmg (int): total damage from the character.
+        total_def (int): total defense from the character.
+        total_heal (int): total heal from the character.
     """
     def __init__(self, name = "Character"):
-        """Creates the character to be played on the field.
+        """Creates the character to be played on the traning ground.
         
         Args:
-            name (str): name of character
+            name (str): name of character.
             
         Side effects:
-            Sets the attributes of name, health, power, and defense.
+            Sets the attributes of name, health, power, defense, total_dmg,
+            total_def, and total_heal.
         """
         self.name = name
         self.health = 100
@@ -128,25 +132,23 @@ class BaseCharacter:
         self.total_heal = 0
         
     def attack(self):
-        """Action to deal damage to an opponent. Deals damage according to what
-        the character's power is currently at.
+        """Action to deal damage to a dummy target. Deals damage according to 
+        what the character's power is currently at.
             
         Side effects:
-            Writes to stdout that opponent has taken damage, changes the health
-            of the opponent
+            Writes to stdout that the dummy target has taken damage, changes the 
+            health of the opponent.
         """
         self.power = random.randint(20, 40)
         self.total_dmg += self.power
         print(f"{self.name} did {self.power} damage to the dummy!")
 
     def taunt(self, num):
-        """Action to taunt other characters, displays taunt in text form, can
-        take another character to specify the taunt. Has multiple taunts that
-        can be chosen or randomized.
-        
+        """Action to taunt the dummy target, displays taunt in text form. Has 
+        multiple taunts that can be chosen or randomized by indicating the index
+        of the taunts list.
+         
         Args:
-            other (BaseCharacter or Tank or Mage or Warrior): name of another
-            character/player
             num (int): position of taunt that is selected
             
         Side effects:
@@ -166,14 +168,20 @@ class BaseCharacter:
         the user.
 
         Side effects:
-          Writes to stdout
+          Writes to stdout.
+          
+        Returns:
+            message (str): the player's status, including their health, power
+            and defense
         """
-        return str(
+        message = str(
             f"{self.name}'s status:"
             f"Health: {self.health}"
             f"Power: {self.power}"
             f"Defense: {self.defense}"            
             )
+        
+        return message
         
 class Tank(BaseCharacter):
     """Tank class variation of base character, has more health, less
@@ -202,22 +210,22 @@ class Tank(BaseCharacter):
             return f"{self.name} is at max health."
         self.total_def += self.defense
      
-        print(f"{self.name} used defend for the round and now has {new_health} health.")
+        print(f"{self.name} used defend for the round and now has {new_health} \
+              health.")
         
     
     def attack(self):
-        """Action to deal damage to an opponent. Deals damage according to what
-        the character's power is currently at. Weakened for the tank class
+        """Action to deal damage to the dummy target. Deals damage according to 
+        what the character's power is currently at. Weakened for the tank class.
         
-        Args:
-            opponent (BaseCharacter): other character
-            
-        Side effects:
-            Writes to stdout that opponent has taken damage, changes the health
-            of the opponent
+        Returns: 
+            tank_attack (str): outputs a message that describes the amount 
+            of damage the character did to the dummy target
+
         """
         self.power = random.randint(10, 20)
-        return super().attack()
+        tank_attack = super().attack()
+        return tank_attack
          
     def __str__(self):
         return "Class: Tank"
@@ -235,24 +243,25 @@ class Mage(BaseCharacter):
     
     def attack(self):
         """Does nothing. Overrides the parent class method but makes it do
-        nothing (pass). May right to stdout that mages cannot use the default
-        attack?
+        nothing (pass). 
+        
+        Side effects: 
+            Write to stdout that mages cannot use the default attack.
         """
         print(f"{self.name} cannot use the default attack.")
         
     def fireball(self):
-        """Action to attack another character, has more power than the default
+        """Action to attack the dummy target, has more power than the default
         attack action. Unique to the mage class.
-
             
-        Side effects:
-            Writes out to stdout that the opponent was attacked, changes the
-            health of the opponent attacked
+        Returns:
+            tank_attack (str): outputs a message that describes the amount 
+            of damage the character did to the dummy target
         """
         self.power = random.randint(30, 60)
-        return super().attack()
+        mage_attack = super().attack()
+        return mage_attack
          
-        
     def heal(self):
         """Heals a small amount of the user's permanent health. Unique to the
         mage class
@@ -284,10 +293,11 @@ class Warrior(BaseCharacter):
 
     def guard(self, opponent):
         """Action to defend an incoming attack. Will add to characters defense
-        stat and health to prevent possible damage from opponent. Unique to the warrior class.
+        stat and health to prevent possible damage from opponent. Unique to the 
+        warrior class.
 
-        Side effects:
-            Writes action to stdout
+        Returns:
+            str: states that the character will be defending this round
         """
         self.defense += 10
 
@@ -310,12 +320,9 @@ def main(filepath, player1):
     it caused.
     
     Args:
-        p1_name (BaseCharacter): Character object of player 1.
-        p2_name (BaseCharacter): Character object of player 2.
-        
-    Side effects:
-        Writes out to stdout the player that is playing, the action they chose,
-        and the effect of those actions. 
+        filepath (str): csv file of a character sheet class that gives details 
+        of each character class
+        player1 (BaseCharacter): Character object of player1
     """
     with open(filepath, "r", encoding = "utf-8") as f:
         for line in f:
@@ -352,13 +359,4 @@ if __name__ == '__main__':
     """
     args = parse_args(sys.argv[1:])
     main(args.filename, args.p1_name)
-    
-    #have function that takes in both player1 and player2
-    #input() function, storing a variable as the user input
-    #input() function to prompt turn-based input
-    #dataframe, don't worry too much about this
-    #finish character classes first, don't focus so so much on the dataframes 
-    #dataframe population should be a simple plug and chug of values and attributes
-    #keep things simple, don't confuse ourselves too much
-    #set operations ideas = getting rid of duplicate values
     
