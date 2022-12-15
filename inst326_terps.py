@@ -61,6 +61,8 @@ class Gameplay:
                 raise ValueError
                 
     def scoreboard_creation(self):
+        """Creates two dataframes, one containing player stats and one containing
+        total actions preformed"""
         self.action()
         self.attack()
         self.defend()
@@ -72,6 +74,8 @@ class Gameplay:
         self.turns = pd.DataFrame({"": "","Turns":self.counter})
   
 def scoreboard_visual(self):
+    """Takes the two dataframes, and visualzes the player stats using a bar 
+    graph, and using groupby, counts total player actions"""
     self.scoreboard_creation()
     turn_count = self.turns.groupby("")["Turns"].count()
     print("Total Player turns: ", turn_count)
@@ -279,23 +283,16 @@ class Warrior(BaseCharacter):
 
     def __str__(self):
         return "Class: Warrior"
-        
-def scoreboard_creation(): 
-    """
-    This function will create dataframe that will act as a scorboard for the 
-    game. It will have room for x amount of players and ranks 1-x, but will not 
-    have any players within the dataframe yet, simply the format 
-    Return: will return the data frame """ 
-    
-def scoreboard_population(socreboard_df): 
-    """
-    This function will take in the socreboard created in scoreboard_creation,
-    and after that, it will modify the dataframe and add x amount of
-    players, ranking them first to last place 
+ 
+def class_sheet(filepath):
+    """Opens a csv file containing the different classes and their move set
+    Args:
+        Filepath: a path to a file"""
+    with open(filepath, "r", encoding = "utf-8") as f:
+        char_class = f.readlines()
+        return char_class
+       
 
-    Returns: This will return the data frame 
-         with the players and their ranks
-    """
 
 def main(player1, player2):
     """ Allows user to create their character and begin the game. User-input 
