@@ -289,7 +289,7 @@ class Warrior(BaseCharacter):
         Side effects:
             Writes action to stdout
         """
-        self.defense += 1
+        self.defense += 10
 
         base_health = BaseCharacter("random").health
         self.health = self.health + opponent.power
@@ -318,8 +318,9 @@ def main(filepath, player1):
         and the effect of those actions. 
     """
     with open(filepath, "r", encoding = "utf-8") as f:
-        file = f.readlines()
-        print(file)
+        for line in f:
+            file = line.strip()
+            print(file)
     player = Gameplay(player1)
     player.select_class()
     player.action()
@@ -339,7 +340,8 @@ def parse_args(args_list):
        agrument vaules
    """
    parser = ArgumentParser()
-   parser.add_argument('p1_name', type=str, help="Please enter Player 1 name")
+   parser.add_argument('filename', type = str, help = "Please enter a file name")
+   parser.add_argument('p1_name', type=str, help="Please enter a Player name")
    args = parser.parse_args(args_list)
    return args
    
@@ -349,7 +351,7 @@ if __name__ == '__main__':
     main() function calling, the driver code to play the game
     """
     args = parse_args(sys.argv[1:])
-    main(args.p1_name)
+    main(args.filename, args.p1_name)
     
     #have function that takes in both player1 and player2
     #input() function, storing a variable as the user input
