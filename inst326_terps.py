@@ -3,17 +3,41 @@ import random
 from argparse import ArgumentParser
 import pandas as pd
 
-class Gameplay:
-    def __init__(self, player):
+class Gameplay: #Written by Brandon
+    """Sets up the game.
+    
+    Attributes:
+        player (str): player name
+        score (dict of str:int): score of player
+        type (BaseCharacter, Tank, Mage, or Warrior): class type of character
+        counter (int): number of rounds/turns taken by player
+    """
+    def __init__(self, player): #Written by Brandon
+        """Creates the player and sets up their profile.
+        
+        Args:
+            player (str): player name
+            
+        Side effects:
+            Sets attributes of the player's name, score, and turn counter 
+        """
         self.player = player
         self.score = {player: 0}
-        self.type = None
         self.counter = 0
 
     
-    def select_class(self):
+    def select_class(self): #Written by Brandon
+        """Prompts player to select their character class
+        
+        Side effects:
+            Changes the character type
+            
+        Raises:
+            ValueError if input is not correct
+        """
         class_type = str(input(f"{self.player}, select a character class:"
                             " Tank, Warrior, Mage.  "))
+        
         if class_type == "Tank" or "tank":
             self.type = Tank(self.player)
         elif class_type == "Warrior" or "warrior":
@@ -23,7 +47,17 @@ class Gameplay:
         else:
             raise ValueError
         
-    def action(self):
+    def action(self): #Written by Brandon (doesn't work when called)
+        """Prompts the character to take an action depending on their class type.
+        Adds to the player turn counter.
+        
+        Side effects:
+            Adds to the player's turn counter, uses a method and writes to stdout
+            
+        Raises:
+            Value error if input is not correct
+        """
+        print(f"You are the {self.type} class, get ready to fight!")
         if self.type == Tank:
             choice = input("Choose an action: Attack, Defend, or Taunt. "
                         "Stop to stop.  ")
@@ -42,7 +76,7 @@ class Gameplay:
             else:
                 raise ValueError
         elif self.type == Mage:
-            choice = input("Choose an action: Fireball, Heal, or Taunt. "
+            choice = input("Choose an action: Attack, Fireball, Heal, or Taunt. "
                         "Stop to stop.  ")
             if choice == "Heal":
                 self.heal()
@@ -77,7 +111,7 @@ class Gameplay:
                 raise ValueError
             
                 
-    def scoreboard_creation(self):
+    def scoreboard_creation(self): #Written by John
         """Creates two dataframes, one containing player stats and one containing
         total actions preformed"""
         self.action()
@@ -90,7 +124,7 @@ class Gameplay:
                              "Total Heal":[self.total_heal],})
         self.turns = pd.DataFrame({"": "","Turns":self.counter})
   
-def scoreboard_visual(self):
+def scoreboard_visual(self): #Written by John
     """Takes the two dataframes, and visualzes the player stats using a bar 
     graph, and using groupby, counts total player actions"""
     self.scoreboard_creation()
@@ -100,7 +134,7 @@ def scoreboard_visual(self):
                            "Total Defence", 
                            "Total Heal"], xlabel = "Player 1")
 
-class BaseCharacter:
+class BaseCharacter: #Written by Brandon
     """Standard character with default status and actions, is not used as a
     playable character but a template for character classes.
     
@@ -110,7 +144,7 @@ class BaseCharacter:
         power (int): power level of character
         defense (int): characters level of defense
     """
-    def __init__(self, name = "Character"):
+    def __init__(self, name = "Character"): #Written by Brandon
         """Creates the character to be played on the field.
         
         Args:
@@ -127,7 +161,7 @@ class BaseCharacter:
         self.total_def = 0
         self.total_heal = 0
         
-    def attack(self):
+    def attack(self): #Written by Brandon
         """Action to deal damage to an opponent. Deals damage according to what
         the character's power is currently at.
             
@@ -139,7 +173,7 @@ class BaseCharacter:
         self.total_dmg += self.power
         print(f"{self.name} did {self.power} damage to the dummy!")
 
-    def taunt(self, num):
+    def taunt(self, num): #Written by Brandon
         """Action to taunt other characters, displays taunt in text form, can
         take another character to specify the taunt. Has multiple taunts that
         can be chosen or randomized.
@@ -161,7 +195,7 @@ class BaseCharacter:
         ]
         print(f"{self.name} taunts: {taunts[num]}")
     
-    def status(self):
+    def status(self): #Written by David
         """Returns the characters' name, health, power, and defense to
         the user.
 
@@ -175,7 +209,7 @@ class BaseCharacter:
             f"Defense: {self.defense}"            
             )
         
-class Tank(BaseCharacter):
+class Tank(BaseCharacter): #Written by Brandon
     """Tank class variation of base character, has more health, less
     power. Has an additional defense ability.
     
@@ -186,7 +220,7 @@ class Tank(BaseCharacter):
         defense (int): characters level of defense
     """
 
-    def defend(self):
+    def defend(self): #Written by Wendy
         """Action to defend against possible incoming damage, lasts one turn,
         would add to the defense stat. Unique to the tank class.
            
@@ -205,7 +239,7 @@ class Tank(BaseCharacter):
         print(f"{self.name} used defend for the round and now has {new_health} health.")
         
     
-    def attack(self):
+    def attack(self): #Written by Wendy
         """Action to deal damage to an opponent. Deals damage according to what
         the character's power is currently at. Weakened for the tank class
         
@@ -220,9 +254,9 @@ class Tank(BaseCharacter):
         return super().attack()
          
     def __str__(self):
-        return "Class: Tank"
+        return "Tank"
     
-class Mage(BaseCharacter):
+class Mage(BaseCharacter):  #Written by Brandon
     """Magic caster variation of base character, but has more power, and less
     health. Has no standard attack action, but two casting actions.
     
@@ -233,14 +267,14 @@ class Mage(BaseCharacter):
         defense (int): characters level of defense
     """
     
-    def attack(self):
+    def attack(self): #Written by Wendy
         """Does nothing. Overrides the parent class method but makes it do
         nothing (pass). May right to stdout that mages cannot use the default
         attack?
         """
         print(f"{self.name} cannot use the default attack.")
         
-    def fireball(self):
+    def fireball(self): #Written by Wendy
         """Action to attack another character, has more power than the default
         attack action. Unique to the mage class.
 
@@ -253,7 +287,7 @@ class Mage(BaseCharacter):
         return super().attack()
          
         
-    def heal(self):
+    def heal(self): #Written by Wendy
         """Heals a small amount of the user's permanent health. Unique to the
         mage class
         
@@ -269,9 +303,9 @@ class Mage(BaseCharacter):
         self.total_heal += heal_value
         
     def __str__(self):
-        return "Class: Mage"
+        return "Mage"
     
-class Warrior(BaseCharacter):
+class Warrior(BaseCharacter): #Written by Brandon
     """Warrior class of the base character. Has standard status and
     uses the default attack but also has a guard action.
 
@@ -282,7 +316,7 @@ class Warrior(BaseCharacter):
         defense (int): characters level of defense
     """
 
-    def guard(self, opponent):
+    def guard(self, opponent): #Written by Linda
         """Action to defend an incoming attack. Will add to characters defense
         stat and health to prevent possible damage from opponent. Unique to the warrior class.
 
@@ -299,10 +333,10 @@ class Warrior(BaseCharacter):
         return f"{self.name} is going to defend!"
 
     def __str__(self):
-        return "Class: Warrior"    
+        return "Warrior"    
 
 
-def main(filepath, player1):
+def main(filepath, player1): #Written by Wendy, Brandon, David, John
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
@@ -325,13 +359,12 @@ def main(filepath, player1):
     player.select_class()
     player.action()
             
-def parse_args(args_list):
+def parse_args(args_list): #Written by Linda
    """Parse command line arguments
   
    Expect three mandatory arguments:
-       - str: player 1 name
-       - str: player 2 name
-       - str: player 3 name
+        - str: file path
+        - str: player 1 name
   
    Args:
        arglist (list of str): arguments from the command line
@@ -346,19 +379,9 @@ def parse_args(args_list):
    return args
    
  
-if __name__ == '__main__':
+if __name__ == '__main__': #Written by Brandon
     """
     main() function calling, the driver code to play the game
     """
     args = parse_args(sys.argv[1:])
     main(args.filename, args.p1_name)
-    
-    #have function that takes in both player1 and player2
-    #input() function, storing a variable as the user input
-    #input() function to prompt turn-based input
-    #dataframe, don't worry too much about this
-    #finish character classes first, don't focus so so much on the dataframes 
-    #dataframe population should be a simple plug and chug of values and attributes
-    #keep things simple, don't confuse ourselves too much
-    #set operations ideas = getting rid of duplicate values
-    
