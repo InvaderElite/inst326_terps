@@ -10,7 +10,6 @@ class Gameplay:
         self.type = None
         self.counter = 0
 
-    
     def select_class(self):
         class_type = str(input(f"{self.player}, select a character class:"
                             " Tank, Warrior, Mage.  "))
@@ -75,8 +74,7 @@ class Gameplay:
                 print(f"The tutorial is over, go kick some butt!")
             else:
                 raise ValueError
-            
-                
+                   
     def scoreboard_creation(self):
         """Creates two dataframes, one containing player stats and one containing
         total actions preformed"""
@@ -213,7 +211,6 @@ class Tank(BaseCharacter):
         print(f"{self.name} used defend for the round and now has {new_health} \
               health.")
         
-    
     def attack(self):
         """Action to deal damage to the dummy target. Deals damage according to 
         what the character's power is currently at. Weakened for the tank class.
@@ -311,7 +308,6 @@ class Warrior(BaseCharacter):
     def __str__(self):
         return "Class: Warrior"    
 
-
 def main(filepath, player1):
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
@@ -352,7 +348,6 @@ def parse_args(args_list):
    args = parser.parse_args(args_list)
    return args
    
- 
 if __name__ == '__main__':
     """
     main() function calling, the driver code to play the game
