@@ -1,0 +1,4 @@
+Class Name,Offensive Move,Defensive Move
+Warrior,Attack:20-40 dmg,Gaurd: defence + 1
+Mage,Fireball: 30-60 dmg,Heal: recover 20 health
+Tank,Attack: 10-20 dmg,Defence: +20 defence
