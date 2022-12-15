@@ -139,19 +139,23 @@ class BaseCharacter: #Written by Brandon
     playable character but a template for character classes.
     
     Attributes:
-        name (str): name of character
-        health (int): health of character
-        power (int): power level of character
-        defense (int): characters level of defense
+        name (str): name of character.
+        health (int): health of character.
+        power (int): power level of character.
+        defense (int): characters level of defense.
+        total_dmg (int): total damage from the character.
+        total_def (int): total defense from the character.
+        total_heal (int): total heal from the character.
     """
     def __init__(self, name = "Character"): #Written by Brandon
         """Creates the character to be played on the field.
         
         Args:
-            name (str): name of character
+            name (str): name of character.
             
         Side effects:
-            Sets the attributes of name, health, power, and defense.
+            Sets the attributes of name, health, power, defense, total_dmg,
+            total_def, and total_heal.
         """
         self.name = name
         self.health = 100
@@ -166,8 +170,8 @@ class BaseCharacter: #Written by Brandon
         the character's power is currently at.
             
         Side effects:
-            Writes to stdout that opponent has taken damage, changes the health
-            of the opponent
+            Writes to stdout that the dummy target has taken damage, changes the 
+            health of the opponent.
         """
         self.power = random.randint(20, 40)
         self.total_dmg += self.power
@@ -179,8 +183,6 @@ class BaseCharacter: #Written by Brandon
         can be chosen or randomized.
         
         Args:
-            other (BaseCharacter or Tank or Mage or Warrior): name of another
-            character/player
             num (int): position of taunt that is selected
             
         Side effects:
@@ -200,9 +202,13 @@ class BaseCharacter: #Written by Brandon
         the user.
 
         Side effects:
-          Writes to stdout
+          Writes to stdout.
+          
+        Returns:
+            message (str): the player's status, including their health, power
+            and defense
         """
-        return str(
+        message = str(
             f"{self.name}'s status:"
             f"Health: {self.health}"
             f"Power: {self.power}"
@@ -236,22 +242,22 @@ class Tank(BaseCharacter): #Written by Brandon
             return f"{self.name} is at max health."
         self.total_def += self.defense
      
-        print(f"{self.name} used defend for the round and now has {new_health} health.")
+        print(f"{self.name} used defend for the round and now has {new_health} \
+              health.")
         
     
     def attack(self): #Written by Wendy
         """Action to deal damage to an opponent. Deals damage according to what
         the character's power is currently at. Weakened for the tank class
         
-        Args:
-            opponent (BaseCharacter): other character
-            
-        Side effects:
-            Writes to stdout that opponent has taken damage, changes the health
-            of the opponent
+        Returns: 
+            tank_attack (str): outputs a message that describes the amount 
+            of damage the character did to the dummy target
+
         """
         self.power = random.randint(10, 20)
-        return super().attack()
+        tank_attack = super().attack()
+        return tank_attack
          
     def __str__(self):
         return "Tank"
@@ -269,22 +275,24 @@ class Mage(BaseCharacter):  #Written by Brandon
     
     def attack(self): #Written by Wendy
         """Does nothing. Overrides the parent class method but makes it do
-        nothing (pass). May right to stdout that mages cannot use the default
-        attack?
+        nothing (pass). 
+        
+        Side effects: 
+            Write to stdout that mages cannot use the default attack.
         """
         print(f"{self.name} cannot use the default attack.")
         
     def fireball(self): #Written by Wendy
         """Action to attack another character, has more power than the default
         attack action. Unique to the mage class.
-
             
-        Side effects:
-            Writes out to stdout that the opponent was attacked, changes the
-            health of the opponent attacked
+        Returns:
+            tank_attack (str): outputs a message that describes the amount 
+            of damage the character did to the dummy target
         """
         self.power = random.randint(30, 60)
-        return super().attack()
+        mage_attack = super().attack()
+        return mage_attack
          
         
     def heal(self): #Written by Wendy
@@ -318,10 +326,11 @@ class Warrior(BaseCharacter): #Written by Brandon
 
     def guard(self, opponent): #Written by Linda
         """Action to defend an incoming attack. Will add to characters defense
-        stat and health to prevent possible damage from opponent. Unique to the warrior class.
+        stat and health to prevent possible damage from opponent. Unique to the 
+        warrior class.
 
-        Side effects:
-            Writes action to stdout
+        Returns:
+            str: states that the character will be defending this round
         """
         self.defense += 10
 
@@ -344,12 +353,9 @@ def main(filepath, player1): #Written by Wendy, Brandon, David, John
     it caused.
     
     Args:
-        p1_name (BaseCharacter): Character object of player 1.
-        p2_name (BaseCharacter): Character object of player 2.
-        
-    Side effects:
-        Writes out to stdout the player that is playing, the action they chose,
-        and the effect of those actions. 
+        filepath (str): csv file of a character sheet class that gives details 
+        of each character class
+        player1 (BaseCharacter): Character object of player1
     """
     with open(filepath, "r", encoding = "utf-8") as f:
         for line in f:
