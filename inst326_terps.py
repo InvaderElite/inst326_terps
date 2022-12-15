@@ -1,5 +1,7 @@
 import sys
 import random
+from argparse import ArgumentParser
+import pandas as pd
 
 class Gameplay:
     def __init__(self, player):
@@ -10,55 +12,70 @@ class Gameplay:
 
     
     def select_class(self):
-        for playername in self.player:
-            class_type = str(input(f"{playername}, select a character class:"
-                               " Tank, Warrior, Mage."))
-            if class_type == "Tank" or "tank":
-                self.type = Tank(playername)
-            elif class_type == "Warrior" or "warrior":
-                self.type = Warrior(playername)
-            elif class_type == "Mage" or "mage":
-                self.type = Mage(playername)
-            else:
-                raise ValueError
+        class_type = str(input(f"{self.player}, select a character class:"
+                            " Tank, Warrior, Mage.  "))
+        if class_type == "Tank" or "tank":
+            self.type = Tank(self.player)
+        elif class_type == "Warrior" or "warrior":
+            self.type = Warrior(self.player)
+        elif class_type == "Mage" or "mage":
+            self.type = Mage(self.player)
+        else:
+            raise ValueError
         
     def action(self):
         if self.type == Tank:
-            choice = input("Choose an action: Attack or Defend. Stop to stop.")
+            choice = input("Choose an action: Attack, Defend, or Taunt. "
+                        "Stop to stop.  ")
             if choice == "Attack":
                 self.attack()
                 self.counter += 1
             elif choice == "Defend":
                 self.defend()
                 self.counter += 1
+            elif choice == "Taunt":
+                num = int(input("Select a number 0-4"))
+                self.taunt(num)
+                self.counter += 1
             elif choice == "Stop":
                 print(f"The tutorial is over, go kick some butt!")
             else:
                 raise ValueError
-        if self.type == Mage:
-            choice = input("Choose an action: Heal or Fireball. Stop to stop.")
+        elif self.type == Mage:
+            choice = input("Choose an action: Fireball, Heal, or Taunt. "
+                        "Stop to stop.  ")
             if choice == "Heal":
                 self.heal()
                 self.counter += 1
             elif choice == "Fireball":
                 self.fireball()
                 self.counter += 1
+            elif choice == "Taunt":
+                num = int(input("Select a number 0-4"))
+                self.taunt(num)
+                self.counter += 1
             elif choice == "Stop":
                 print(f"The tutorial is over, go kick some butt!")
             else:
                 raise ValueError
-        if self.type == Warrior:
-            choice = input("Choose an action: Attack or Guard. Stop to stop.")
+        elif self.type == Warrior:
+            input("Choose an action: Attack, Guard, or Taunt. "
+                        "Stop to stop.  ")
             if choice == "Attack":
                 self.attack()
                 self.counter += 1
-            elif choice == "Fireball":
+            elif choice == "Guard":
                 self.guard()
+                self.counter += 1
+            elif choice == "Taunt":
+                num = int(input("Select a number 0-4"))
+                self.taunt(num)
                 self.counter += 1
             elif choice == "Stop":
                 print(f"The tutorial is over, go kick some butt!")
             else:
                 raise ValueError
+            
                 
     def scoreboard_creation(self):
         """Creates two dataframes, one containing player stats and one containing
@@ -77,7 +94,7 @@ def scoreboard_visual(self):
     """Takes the two dataframes, and visualzes the player stats using a bar 
     graph, and using groupby, counts total player actions"""
     self.scoreboard_creation()
-    turn_count = self.turns.groupby("")["Turns"].count()
+    turn_count = self.counter.groupby("")["Turns"].count()
     print("Total Player turns: ", turn_count)
     self.score_board.plot.bar(y = ["Total Damage",
                            "Total Defence", 
@@ -119,9 +136,9 @@ class BaseCharacter:
             of the opponent
         """
         self.power = random.randint(20, 40)
-        print(f"{self.name} did {self.power} damage to the dummy!")
         self.total_dmg += self.power
-        
+        print(f"{self.name} did {self.power} damage to the dummy!")
+
     def taunt(self, num):
         """Action to taunt other characters, displays taunt in text form, can
         take another character to specify the taunt. Has multiple taunts that
@@ -188,7 +205,7 @@ class Tank(BaseCharacter):
         print(f"{self.name} used defend for the round and now has {new_health} health.")
         
     
-    def attack(self, opponent):
+    def attack(self):
         """Action to deal damage to an opponent. Deals damage according to what
         the character's power is currently at. Weakened for the tank class
         
@@ -282,19 +299,10 @@ class Warrior(BaseCharacter):
         return f"{self.name} is going to defend!"
 
     def __str__(self):
-        return "Class: Warrior"
- 
-def class_sheet(filepath):
-    """Opens a csv file containing the different classes and their move set
-    Args:
-        Filepath: a path to a file"""
-    with open(filepath, "r", encoding = "utf-8") as f:
-        char_class = f.readlines()
-        return char_class
-       
+        return "Class: Warrior"    
 
 
-def main(player1, player2):
+def main(filepath, player1):
     """ Allows user to create their character and begin the game. User-input 
     allows users to select their actions and conditional statements determines 
     how those actions affect the other players. Returns print statements that
@@ -309,8 +317,12 @@ def main(player1, player2):
         Writes out to stdout the player that is playing, the action they chose,
         and the effect of those actions. 
     """
-    player1 = Gameplay()
-    player1.select_class("Bob")
+    with open(filepath, "r", encoding = "utf-8") as f:
+        file = f.readlines()
+        print(file)
+    player = Gameplay(player1)
+    player.select_class()
+    player.action()
             
 def parse_args(args_list):
    """Parse command line arguments
@@ -326,19 +338,18 @@ def parse_args(args_list):
    Returns:
        agrument vaules
    """
-   parser = argparse.ArgumentParser()
+   parser = ArgumentParser()
    parser.add_argument('p1_name', type=str, help="Please enter Player 1 name")
-   parser.add_argument('p2_name', type=str, help="Please enter Player 2 name")
-   parser.add_argument('p3_name', type=str, help="Please enter Player 3 name")
    args = parser.parse_args(args_list)
    return args
    
  
 if __name__ == '__main__':
     """
-    play() function calling, the driver code to play the game
+    main() function calling, the driver code to play the game
     """
-    main()
+    args = parse_args(sys.argv[1:])
+    main(args.p1_name)
     
     #have function that takes in both player1 and player2
     #input() function, storing a variable as the user input
